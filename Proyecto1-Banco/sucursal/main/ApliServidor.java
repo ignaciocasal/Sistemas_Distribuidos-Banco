@@ -1,3 +1,4 @@
+package main;
 import java.rmi.RemoteException;
 
 public class ApliServidor {

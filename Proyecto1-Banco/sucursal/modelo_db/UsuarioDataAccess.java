@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-import cliente.Cliente;
+import main.ClienteSv;
 
 public final class UsuarioDataAccess extends DataAccess {
 
-	public static Cliente usuarioActual = null;
+	public static ClienteSv usuarioActual = null;
 
 	private UsuarioDataAccess() {
 
