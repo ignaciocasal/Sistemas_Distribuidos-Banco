@@ -7,7 +7,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
-import modelo_db.CuentaDataAccess;
+import modelo_db.DataAccess;
 
 @SuppressWarnings("serial")
 public class Servidor extends UnicastRemoteObject implements InterfazReceptorMensajes {
@@ -38,10 +38,9 @@ public class Servidor extends UnicastRemoteObject implements InterfazReceptorMen
 	}
 	
 	@Override
-	public String ingresarAlSistema(String dni, String clave) throws RemoteException {
-		return null;
-		// TODO Auto-generated method stub
-		
+	public boolean ingresarAlSistema(String dni, String clave) throws RemoteException {
+		boolean valido = DataAccess.login(dni, clave);
+		return valido;
 	}
 	
 	@Override
@@ -88,7 +87,7 @@ public class Servidor extends UnicastRemoteObject implements InterfazReceptorMen
 
 	@Override
 	public void test() throws RemoteException {
-		CuentaDataAccess.bajarTabla();
+		DataAccess.bajarTabla();
 	}
 
 

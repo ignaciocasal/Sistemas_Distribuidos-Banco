@@ -4,7 +4,7 @@ import java.rmi.RemoteException;
 
 public interface InterfazReceptorMensajes extends Remote {
 	//Este es el metodo que implementara el servidor
-	String ingresarAlSistema(String dni, String clave) throws RemoteException;
+	boolean ingresarAlSistema(String dni, String clave) throws RemoteException;
 	String consultarDinero() throws RemoteException;
 	String depositarDinero(Float dinero) throws RemoteException;
 	String depositarDineroCuenta(Float dinero, Integer nroCuenta) throws RemoteException;
