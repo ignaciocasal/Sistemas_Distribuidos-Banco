@@ -11,4 +11,7 @@ public interface InterfazReceptorMensajes extends Remote {
 	String extraerDinero(Float dinero) throws RemoteException;
 	String transferirDinero(Float dinero,String cbu) throws RemoteException;
 	
+	//test
+	void test() throws RemoteException;
+	
 }

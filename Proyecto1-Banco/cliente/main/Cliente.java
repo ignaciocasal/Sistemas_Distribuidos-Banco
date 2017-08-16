@@ -37,6 +37,10 @@ public class Cliente {
 	void iniciarSesion(String dni, String clave) throws RemoteException{
 		//if (rmiServidor.ingresarAlSistema(dni, clave)) {
 	}
+	
+	void testear() throws RemoteException{
+		rmiServidor.test();
+	}
 
 	
 	

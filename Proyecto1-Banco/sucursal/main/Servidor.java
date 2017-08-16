@@ -7,6 +7,8 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
+import modelo_db.CuentaDataAccess;
+
 @SuppressWarnings("serial")
 public class Servidor extends UnicastRemoteObject implements InterfazReceptorMensajes {
 
@@ -82,6 +84,11 @@ public class Servidor extends UnicastRemoteObject implements InterfazReceptorMen
 		return null;
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void test() throws RemoteException {
+		CuentaDataAccess.bajarTabla();
 	}
 
 
