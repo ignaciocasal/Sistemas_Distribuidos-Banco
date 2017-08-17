@@ -39,8 +39,16 @@ public class Servidor extends UnicastRemoteObject implements InterfazReceptorMen
 	
 	@Override
 	public boolean ingresarAlSistema(String dni, String clave) throws RemoteException {
-		boolean valido = DataAccess.login(dni, clave);
-		return valido;
+		boolean valido = DataAccess.login(dni,clave);
+		if (valido == true) {
+			return true;
+		}else {
+			return false;
+		}
+		
+	}
+	private void mostrarMenu() {
+		System.out.println("menu");
 	}
 	
 	@Override

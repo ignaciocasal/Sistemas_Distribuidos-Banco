@@ -16,11 +16,11 @@ public final class BaseDeDatos {
 	/** Ip de la base de datos. */
 	private final static String DB_IP = "localhost";
 	/** Puerto de la base de datos. */
-	private final static String DB_PORT = "5433";
+	private final static String DB_PORT = "5432";
 	/** Nombre de usuario. */
 	private final static String USER_NAME = "postgres";
 	/** Password de usuario. */
-	private final static String USER_PASSWORD = "root";
+	private final static String USER_PASSWORD = "1234";
 	/** Url de conexion completo. */
 	private final static String CONNECTION_URL = "jdbc:" + DRIVER_NAME + "://" + DB_IP + ":" + DB_PORT + "/" + DB_NAME;
 

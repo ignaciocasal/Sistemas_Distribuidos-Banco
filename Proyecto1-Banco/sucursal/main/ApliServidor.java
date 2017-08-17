@@ -6,7 +6,8 @@ public class ApliServidor {
 	public static void main(String[] args) throws RemoteException {
 		// TODO Auto-generated method stub
 
-		Servidor server = new Servidor(7556);
+		Servidor server = new Servidor(7559);
+		
 		
 	}
 

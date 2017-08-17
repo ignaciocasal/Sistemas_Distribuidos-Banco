@@ -35,8 +35,11 @@ public class Cliente {
 				(registro.lookup("rmiServidor"));
 	}
 	void iniciarSesion(String dni, String clave) throws RemoteException{
-		if (rmiServidor.ingresarAlSistema(dni, clave)) {
-		
+	boolean existe = rmiServidor.ingresarAlSistema(dni,clave);
+	if (existe == true) {
+		System.out.println("menu");
+		}else {
+		System.out.println("No se encontró");
 		}
 	}
 	

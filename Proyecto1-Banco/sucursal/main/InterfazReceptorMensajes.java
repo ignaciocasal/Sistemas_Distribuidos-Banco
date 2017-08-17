@@ -14,4 +14,5 @@ public interface InterfazReceptorMensajes extends Remote {
 	//test
 	void test() throws RemoteException;
 	
+	
 }

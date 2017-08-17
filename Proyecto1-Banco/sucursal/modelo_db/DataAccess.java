@@ -20,8 +20,8 @@ public final class DataAccess {
 	}
 
 	public static void bajarTabla() {
-		String[][] cuentas = new String[6][6];
-		final String consulta = "SELECT * FROM cuentas ";
+		String[][] usuarios = new String[6][6];
+		final String consulta = "SELECT * FROM  users";
 		try (Connection c = BaseDeDatos.newConnection()) {
 			PreparedStatement statement = c.prepareStatement(consulta);
 			ResultSet res = statement.executeQuery();
@@ -29,16 +29,17 @@ public final class DataAccess {
 			while (res.next()) {
 				System.out.println("FILA "+i);
 				int j=0;
-				cuentas[i][++j]  = res.getString("nro");
-				System.out.println(cuentas[i][j]);
-				cuentas[i][++j]  = res.getString("saldo");
-				System.out.println(cuentas[i][j]);
-				cuentas[i][++j]  = res.getString("clave");
-				System.out.println(cuentas[i][j]);
-				cuentas[i][++j]  = res.getString("cbu");
-				System.out.println(cuentas[i][j]);
-				cuentas[i][++j]  = res.getString("dni_cliente");
-				System.out.println(cuentas[i][j]);
+				System.out.println();
+				usuarios[i][++j]  = res.getString("dni");
+				System.out.println(usuarios[i][j]);
+				usuarios[i][++j]  = res.getString("nombre");
+				System.out.println(usuarios[i][j]);
+				usuarios[i][++j]  = res.getString("apellido");
+				System.out.println(usuarios[i][j]);
+//				cuentas[i][++j]  = res.getString("cbu");
+//				System.out.println(cuentas[i][j]);
+//				cuentas[i][++j]  = res.getString("dni_cliente");
+//				System.out.println(cuentas[i][j]);
 				i++;
 			}
 			
@@ -47,5 +48,27 @@ public final class DataAccess {
 		}
 
 	}
+	
+	public static boolean login(String dni, String clave) {
+		// tienen que ir los '' por que postgres necesita compara con String
+		final String consulta = "SELECT * FROM  cuentas WHERE cuentas.dni_cliente = '"+dni+"' "
+				+ "and cuentas.clave = '"+clave+"'";
+		try (Connection c = BaseDeDatos.newConnection()) {
+			PreparedStatement statement = c.prepareStatement(consulta);
+			ResultSet res = statement.executeQuery();
+			int i=0;
+			while (res.next()) {
+				System.out.println("Encontró usuario");
+				return true;
+			}
+			
+			return false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	
 
 }
