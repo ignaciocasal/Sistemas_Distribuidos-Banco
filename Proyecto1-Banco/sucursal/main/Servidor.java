@@ -15,6 +15,7 @@ public class Servidor extends UnicastRemoteObject implements InterfazReceptorMen
 	Integer nroPuerto;
 	String IP;
 	Registry registro;
+	Respuesta rta;
 	
 	protected Servidor(Integer numeroPuertoRemoto) throws RemoteException {
 		
@@ -49,9 +50,9 @@ public class Servidor extends UnicastRemoteObject implements InterfazReceptorMen
 	}
 	
 	@Override
-	public Float consultarDinero() throws RemoteException {
+	public Float consultarDinero(String dni) throws RemoteException {
 		Float dineroDisponible;
-		String dni;
+		
 		dineroDisponible = DataAccess.consultarDinero(dni);
 		
 
@@ -61,33 +62,36 @@ public class Servidor extends UnicastRemoteObject implements InterfazReceptorMen
 	}
 
 	@Override
-	public String depositarDinero(String dni, Float dinero) throws RemoteException {
+	public Integer depositarDinero(String dni, Float dinero) throws RemoteException {
 //		Boolean ok = true;
 //		if (ok) {
 //			return "Dinero depositado";
 //		} else {
 //			return "No se pudo realizar operación";
 //		}
-		return dinero.toString();
+	//	return dinero.toString();
+		return null;
 	}
 
 
 	@Override
-	public String depositarDineroCuenta(String dni, Float dinero, Integer nroCuenta) throws RemoteException {
+	public Integer depositarDineroCuenta(String dni, Float dinero, Integer nroCuenta) throws RemoteException {
 		String res = dinero.toString() + " pesos a la cuenta nro " + nroCuenta;
-		return (res);
+		//return (res);
+		return null;
 	}
 
 
 	@Override
-	public String extraerDinero(String dni, Float dinero) throws RemoteException {
+	public Integer extraerDinero(String dni, Float dinero) throws RemoteException {
 		
-		return dinero.toString();
+		//return dinero.toString();
+		return null;
 	}
 
 
 	@Override
-	public String transferirDinero(String dni, Float dinero, String CBU) throws RemoteException {
+	public Integer transferirDinero(String dni, Float dinero, String CBU) throws RemoteException {
 		return null;
 		// TODO Auto-generated method stub
 		
