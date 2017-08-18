@@ -50,7 +50,7 @@ public class Servidor extends UnicastRemoteObject implements InterfazReceptorMen
 	
 	@Override
 	public String consultarDinero() throws RemoteException {
-		String dineroDisponible = "";
+		String dineroDisponible = "$$saldo$$";
 		//dineroDisponible = Realizar consulta;
 		
 		return dineroDisponible;
@@ -58,28 +58,27 @@ public class Servidor extends UnicastRemoteObject implements InterfazReceptorMen
 
 	@Override
 	public String depositarDinero(Float dinero) throws RemoteException {
-		Boolean ok = true;
-		if (ok) {
-			return "Se ha depositado el dinero en la cuenta";
-		} else {
-			return "No se pudo realizar operación";
-		}
+//		Boolean ok = true;
+//		if (ok) {
+//			return "Dinero depositado";
+//		} else {
+//			return "No se pudo realizar operación";
+//		}
+		return dinero.toString();
 	}
 
 
 	@Override
 	public String depositarDineroCuenta(Float dinero, Integer nroCuenta) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
-
+		String res = dinero.toString() + " pesos a la cuenta nro " + nroCuenta;
+		return (res);
 	}
 
 
 	@Override
 	public String extraerDinero(Float dinero) throws RemoteException {
-		return null;
-		// TODO Auto-generated method stub
 		
+		return dinero.toString();
 	}
 
 
