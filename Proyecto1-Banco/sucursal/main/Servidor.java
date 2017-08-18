@@ -50,7 +50,7 @@ public class Servidor extends UnicastRemoteObject implements InterfazReceptorMen
 	}
 	
 	@Override
-	public Float consultarDinero(String dni) throws RemoteException {
+	public Respuesta consultarDinero(String dni) throws RemoteException {
 		Float dineroDisponible;
 		
 		dineroDisponible = DataAccess.consultarDinero(dni);
@@ -62,7 +62,7 @@ public class Servidor extends UnicastRemoteObject implements InterfazReceptorMen
 	}
 
 	@Override
-	public Integer depositarDinero(String dni, Float dinero) throws RemoteException {
+	public Respuesta depositarDinero(String dni, Float dinero) throws RemoteException {
 //		Boolean ok = true;
 //		if (ok) {
 //			return "Dinero depositado";
@@ -75,7 +75,7 @@ public class Servidor extends UnicastRemoteObject implements InterfazReceptorMen
 
 
 	@Override
-	public Integer depositarDineroCuenta(String dni, Float dinero, Integer nroCuenta) throws RemoteException {
+	public Respuesta depositarDineroCuenta(String dni, Float dinero, Integer nroCuenta) throws RemoteException {
 		String res = dinero.toString() + " pesos a la cuenta nro " + nroCuenta;
 		//return (res);
 		return null;
@@ -83,7 +83,7 @@ public class Servidor extends UnicastRemoteObject implements InterfazReceptorMen
 
 
 	@Override
-	public Integer extraerDinero(String dni, Float dinero) throws RemoteException {
+	public Respuesta extraerDinero(String dni, Float dinero) throws RemoteException {
 		
 		//return dinero.toString();
 		return null;
@@ -91,7 +91,7 @@ public class Servidor extends UnicastRemoteObject implements InterfazReceptorMen
 
 
 	@Override
-	public Integer transferirDinero(String dni, Float dinero, String CBU) throws RemoteException {
+	public Respuesta transferirDinero(String dni, Float dinero, String CBU) throws RemoteException {
 		return null;
 		// TODO Auto-generated method stub
 		
