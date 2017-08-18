@@ -58,7 +58,7 @@ public final class DataAccess {
 			ResultSet res = statement.executeQuery();
 			int i=0;
 			while (res.next()) {
-				System.out.println("Encontró usuario");
+				System.out.println("Usuario "+dni+" ha iniciado sesión");
 				return true;
 			}
 			
@@ -67,6 +67,26 @@ public final class DataAccess {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public static Float consultarDinero(String dni) {
+		final String consulta = "SELECT cuentas.saldo FROM cuentas WHERE cuentas.dni_cliente = '"+dni+"'";
+		Float result;
+		try (Connection c = BaseDeDatos.newConnection()) {
+			PreparedStatement statement = c.prepareStatement(consulta);
+			ResultSet res = statement.executeQuery();
+			int i=0;
+			while (res.next()) {
+				result = Float.parseFloat(res.getString("saldo"));
+				return result;
+			}
+			
+			return null;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+		
 	}
 	
 	

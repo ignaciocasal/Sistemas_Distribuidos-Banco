@@ -15,7 +15,7 @@ public class Servidor extends UnicastRemoteObject implements InterfazReceptorMen
 	Integer nroPuerto;
 	String IP;
 	Registry registro;
-	Respuesta rta;
+	
 	
 	protected Servidor(Integer numeroPuertoRemoto) throws RemoteException {
 		
@@ -51,14 +51,13 @@ public class Servidor extends UnicastRemoteObject implements InterfazReceptorMen
 	
 	@Override
 	public Respuesta consultarDinero(String dni) throws RemoteException {
-		Float dineroDisponible;
-		
-		dineroDisponible = DataAccess.consultarDinero(dni);
-		
-
-		//dineroDisponible = Realizar consulta;
-		
-		return dineroDisponible;
+		Respuesta rta = null;
+		rta.valor =  DataAccess.consultarDinero(dni);
+		if(rta.valor == null) {
+			rta.codError = 1;
+		} 
+		//En cliente: Si llega codError null todo bien SINO ver cual es el error
+		return rta;
 	}
 
 	@Override
