@@ -41,6 +41,7 @@ public class Cliente {
 	void iniciarSesion(String dni, String clave) throws RemoteException{
 		boolean existe = rmiServidor.ingresarAlSistema(dni,clave);
 		if (existe == true) {
+			this.dni=dni;
 			this.mostrarMenu();
 		}else {
 		System.out.println("No se encontró");
@@ -92,14 +93,14 @@ public class Cliente {
 		switch (ingreso) {
 		case 1: //Consultar saldo
 			System.out.println("Opción 1.");
-			res = rmiServidor.consultarDinero();
+			res = rmiServidor.consultarDinero(this.dni);
 			System.out.println(res);
 			break;
 		case 2: //Depositar dinero en cuenta propia
 			System.out.println("Opción 2.");
 			System.out.println("Ingrese el monto a depositar:");
 			dinero = this.ingresarFloat();
-			res = rmiServidor.depositarDinero(dinero);
+			res = rmiServidor.depositarDinero(this.dni, dinero);
 			System.out.println(res);
 			break;
 		case 3: //Depositar dinero en otra cuenta
@@ -108,7 +109,7 @@ public class Cliente {
 			nroCuentaDeposito = this.ingresarInteger();
 			System.out.println("Ingrese el monto a depositar:");
 			dinero = this.ingresarFloat();
-			res = rmiServidor.depositarDineroCuenta(dinero, nroCuentaDeposito);
+			res = rmiServidor.depositarDineroCuenta(this.dni, dinero, nroCuentaDeposito);
 			System.out.println(res);
 			break;
 		case 4: //Extraer dinero
@@ -118,10 +119,8 @@ public class Cliente {
 			System.out.println("Opción 5.");
 			break;
 		default: //Otra opción
-			if (ingreso!=0) {
-				System.out.println("Opción inválida."+ingreso);
-				this.mostrarMenu();
-			}
+			System.out.println("Opción inválida."+ingreso);
+			this.mostrarMenu();
 			break;
 		}
 	}
