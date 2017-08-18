@@ -47,9 +47,6 @@ public class Servidor extends UnicastRemoteObject implements InterfazReceptorMen
 		}
 		
 	}
-	private void mostrarMenu() {
-		System.out.println("menu");
-	}
 	
 	@Override
 	public String consultarDinero() throws RemoteException {
