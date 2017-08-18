@@ -71,7 +71,7 @@ public final class DataAccess {
 	
 	public static Float consultarDinero(String dni) {
 		final String consulta = "SELECT cuentas.saldo FROM cuentas WHERE cuentas.dni_cliente = '"+dni+"'";
-		Float result;
+		Float result; 
 		try (Connection c = BaseDeDatos.newConnection()) {
 			PreparedStatement statement = c.prepareStatement(consulta);
 			ResultSet res = statement.executeQuery();

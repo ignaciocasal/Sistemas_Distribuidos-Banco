@@ -85,7 +85,7 @@ public class Cliente {
 		
 		Integer ingreso = this.ingresarInteger();
 		
-		String res = null;
+		Respuesta res = null;
 		Float dinero = null;
 		Integer nroCuentaDeposito = null;
 		
@@ -94,7 +94,11 @@ public class Cliente {
 		case 1: //Consultar saldo
 			System.out.println("Opción 1.");
 			res = rmiServidor.consultarDinero(this.dni);
-			System.out.println(res);
+			if (res.codError == null) {
+				System.out.println("Su saldo actual es de $"+res.valor);
+			}else {
+				System.out.println("Error al realizar la operación. Intente nuevamente");
+			}
 			break;
 		case 2: //Depositar dinero en cuenta propia
 			System.out.println("Opción 2.");

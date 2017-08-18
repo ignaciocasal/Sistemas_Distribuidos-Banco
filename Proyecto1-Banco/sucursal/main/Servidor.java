@@ -51,7 +51,7 @@ public class Servidor extends UnicastRemoteObject implements InterfazReceptorMen
 	
 	@Override
 	public Respuesta consultarDinero(String dni) throws RemoteException {
-		Respuesta rta = null;
+		Respuesta rta = new Respuesta();
 		rta.valor =  DataAccess.consultarDinero(dni);
 		if(rta.valor == null) {
 			rta.codError = 1;
