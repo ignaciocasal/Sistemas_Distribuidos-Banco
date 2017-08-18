@@ -49,8 +49,11 @@ public class Servidor extends UnicastRemoteObject implements InterfazReceptorMen
 	}
 	
 	@Override
-	public String consultarDinero() throws RemoteException {
-		String dineroDisponible = "$$saldo$$";
+	public Float consultarDinero() throws RemoteException {
+		Float dineroDisponible;
+		String dni;
+		dineroDisponible = DataAccess.consultarDinero(dni);
+		
 		//dineroDisponible = Realizar consulta;
 		
 		return dineroDisponible;

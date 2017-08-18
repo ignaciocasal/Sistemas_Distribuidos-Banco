@@ -118,10 +118,8 @@ public class Cliente {
 			System.out.println("Opción 5.");
 			break;
 		default: //Otra opción
-			if (ingreso!=0) {
-				System.out.println("Opción inválida."+ingreso);
-				this.mostrarMenu();
-			}
+			System.out.println("Opción inválida."+ingreso);
+			this.mostrarMenu();
 			break;
 		}
 	}
