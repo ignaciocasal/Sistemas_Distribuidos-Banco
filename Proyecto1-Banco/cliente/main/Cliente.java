@@ -38,40 +38,77 @@ public class Cliente {
 				(registro.lookup("rmiServidor"));
 	}
 	
+	void start() throws RemoteException{
+		System.out.println("Ingrese su DNI:");
+		Integer intDni = this.ingresarInteger();
+		if (intDni==null) {
+				this.start();		
+		}else{
+		String dni = intDni.toString();
+		System.out.println("Ingrese su clave:");
+		String clave =  teclado.nextLine();
+		this.iniciarSesion(dni, clave);
+		}
+	}
+	
 	void iniciarSesion(String dni, String clave) throws RemoteException{
 		boolean existe = rmiServidor.ingresarAlSistema(dni,clave);
 		if (existe == true) {
 			this.dni=dni;
 			this.mostrarMenu();
 		}else {
-		System.out.println("No se encontró");
+			System.out.println("Usuario o contraseña incorrectos");
+			this.start();
 		}
 	}
 	
 	private Integer ingresarInteger() throws RemoteException{
-		Integer ingreso = 0;
+		Integer ingreso = null;
 		try { //consistencia para que ingrese solo integer
 //			ingreso = teclado.nextInt();
 			String nextIntString = teclado.nextLine(); //get the number as a single line
 			ingreso = Integer.parseInt(nextIntString); //convert the string to an int
 		} catch (Exception e) {
 			System.out.println("Ingreso inválido");
-			this.mostrarMenu();
 		}
 		return ingreso;
 	}
 	
 	private Float ingresarFloat() throws RemoteException{
-		Float ingreso = (float) 0.0;
+		Float ingreso = null;
 		try { //consistencia para que ingrese solo float
 //			ingreso = teclado.nextFloat();
 			String nextIntString = teclado.nextLine(); //get the number as a single line
 			ingreso = Float.parseFloat(nextIntString); //convert the string to an int
 		} catch (Exception e) {
 			System.out.println("Ingreso inválido");
-			this.mostrarMenu();
 		}
 		return ingreso;
+	}
+	
+	private void cierreOperacion() throws RemoteException{
+		System.out.println("Seleccione una opcion:");
+		System.out.println("1 - Cerrar sesión");
+		System.out.println("2 - Volver al menú principal");
+		Integer ingreso = this.ingresarInteger();
+		if (ingreso==null) {
+			this.cierreOperacion();
+		}else{
+			switch (ingreso) {
+			case 1:
+				System.out.println("-- SESION FINALIZADA --");
+				System.exit(0); 
+				break;
+			case 2:
+				this.mostrarMenu();
+				break;
+
+			default:
+				System.out.println("Opción inválida.");
+				this.cierreOperacion();
+				break;
+			}
+		}
 	}
 	
 	private void mostrarMenu() throws RemoteException {
@@ -82,8 +119,12 @@ public class Cliente {
 		System.out.println("3 - Depositar dinero en otra cuenta");
 		System.out.println("4 - Extraer dinero");
 		System.out.println("5 - Transferir dinero a una cuenta");
+		System.out.println("6 - Cerrar sesión");
 		
 		Integer ingreso = this.ingresarInteger();
+		if (ingreso==null) {
+			this.mostrarMenu();
+		}else{
 		
 		Respuesta res = null;
 		Float dinero = null;
@@ -99,22 +140,36 @@ public class Cliente {
 			}else {
 				System.out.println("Error al realizar la operación. Intente nuevamente");
 			}
+			this.cierreOperacion();
 			break;
 		case 2: //Depositar dinero en cuenta propia
 			System.out.println("Opción 2.");
 			System.out.println("Ingrese el monto a depositar:");
 			dinero = this.ingresarFloat();
-			res = rmiServidor.depositarDinero(this.dni, dinero);
-			System.out.println(res);
+			if (dinero==null) {
+				this.mostrarMenu();
+			}else{
+				res = rmiServidor.depositarDinero(this.dni, dinero);
+				System.out.println(res);
+				this.cierreOperacion();
+			}
 			break;
 		case 3: //Depositar dinero en otra cuenta
 			System.out.println("Opción 3.");
 			System.out.println("Ingrese el nro de cuenta en la que desea depositar:");
 			nroCuentaDeposito = this.ingresarInteger();
-			System.out.println("Ingrese el monto a depositar:");
-			dinero = this.ingresarFloat();
-			res = rmiServidor.depositarDineroCuenta(this.dni, dinero, nroCuentaDeposito);
-			System.out.println(res);
+			if (nroCuentaDeposito==null) {
+				this.mostrarMenu();
+			}else{
+				System.out.println("Ingrese el monto a depositar:");
+				dinero = this.ingresarFloat();
+				if (dinero==null) {
+					this.mostrarMenu();
+				}else{
+				res = rmiServidor.depositarDineroCuenta(this.dni, dinero, nroCuentaDeposito);
+				System.out.println(res);
+				}
+			}
 			break;
 		case 4: //Extraer dinero
 			System.out.println("Opción 4.");
@@ -122,10 +177,15 @@ public class Cliente {
 		case 5: //Transferir dinero a una cuenta
 			System.out.println("Opción 5.");
 			break;
+		case 6:
+			System.out.println("-- SESION FINALIZADA --");
+			System.exit(0); 
+			break;
 		default: //Otra opción
-			System.out.println("Opción inválida."+ingreso);
+			System.out.println("Opción inválida.");
 			this.mostrarMenu();
 			break;
+		}
 		}
 	}
 	

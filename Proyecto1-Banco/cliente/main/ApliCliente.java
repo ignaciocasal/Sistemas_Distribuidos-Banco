@@ -6,9 +6,9 @@ public class ApliCliente {
 
 	public static void main(String[] args) throws RemoteException, NotBoundException {  
         
-		Cliente cliente1 = new Cliente("192.168.185.190",7559);
+		Cliente cliente1 = new Cliente("192.168.1.104",7559);
 		
-		cliente1.iniciarSesion("39203249", "1234");
+		cliente1.start();
 		
 	}
 }
