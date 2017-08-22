@@ -88,6 +88,20 @@ public final class DataAccess {
 		return null;
 		
 	}
+	public static Float depositarDinero(String dni, Float dinero) {
+		Float saldoActual = DataAccess.consultarDinero(dni); // Para checkear si es correcto
+		Float saldoAGuardar = saldoActual + dinero;
+		final String consulta = "UPDATE cuentas SET saldo = '"+saldoAGuardar+"' WHERE dni_cliente = '"+dni+"'";
+		try (Connection c = BaseDeDatos.newConnection()) {
+			PreparedStatement statement = c.prepareStatement(consulta);
+			statement.executeUpdate();	
+			return saldoAGuardar;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	
 

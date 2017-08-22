@@ -150,8 +150,13 @@ public class Cliente {
 				this.mostrarMenu();
 			}else{
 				res = rmiServidor.depositarDinero(this.dni, dinero);
-				System.out.println(res);
-				this.cierreOperacion();
+					if (res.codError == null) {
+						System.out.println("Su saldo actual es de $"+res.valor);
+					} else {
+						System.out.println("Error al realizar la operación. Intente nuevamente");
+					}
+			this.cierreOperacion();
+			// SI TE PARECE acá reutilizar código, es mas o menos parecido lo que hacemos con la respuesta
 			}
 			break;
 		case 3: //Depositar dinero en otra cuenta

@@ -62,14 +62,12 @@ public class Servidor extends UnicastRemoteObject implements InterfazReceptorMen
 
 	@Override
 	public Respuesta depositarDinero(String dni, Float dinero) throws RemoteException {
-//		Boolean ok = true;
-//		if (ok) {
-//			return "Dinero depositado";
-//		} else {
-//			return "No se pudo realizar operación";
-//		}
-	//	return dinero.toString();
-		return null;
+		Respuesta rta = new Respuesta();
+		rta.valor = DataAccess.depositarDinero(dni, dinero);
+		if (rta.valor == null) {
+			rta.codError = 1; //No pudo depositar
+		} 
+		return rta;
 	}
 
 
