@@ -48,7 +48,21 @@ public final class DataAccess {
 		}
 
 	}
-	
+	public static boolean existeCuenta(Integer nroCuenta) {
+		final String consulta = "SELECT * FROM  cuentas WHERE cuentas.nro = '"+nroCuenta+"'";
+		try (Connection c = BaseDeDatos.newConnection()) {
+			PreparedStatement statement = c.prepareStatement(consulta);
+			ResultSet res = statement.executeQuery();
+			while (res.next()) {
+				return true;
+			}
+			return false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+		
 	public static boolean login(String dni, String clave) {
 		// tienen que ir los '' por que postgres necesita compara con String
 		final String consulta = "SELECT * FROM  cuentas WHERE cuentas.dni_cliente = '"+dni+"' "
@@ -80,14 +94,13 @@ public final class DataAccess {
 				result = Float.parseFloat(res.getString("saldo"));
 				return result;
 			}
-			
 			return null;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
-		
 	}
+	
 	public static Float depositarDinero(String dni, Float dinero) {
 		Float saldoActual = DataAccess.consultarDinero(dni); // Para checkear si es correcto
 		Float saldoAGuardar = saldoActual + dinero;
@@ -103,6 +116,18 @@ public final class DataAccess {
 		return null;
 	}
 	
+	public static boolean depositarDineroCuenta (String dni, Float dinero, Integer nroCuenta) {
+		final String consulta = "UPDATE cuentas SET saldo = saldo + '"+dinero+"' WHERE nro = '"+nroCuenta+"'";
+		try (Connection c = BaseDeDatos.newConnection()) {
+			PreparedStatement statement = c.prepareStatement(consulta);
+			statement.executeUpdate();	
+			return true;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 	
 
 }

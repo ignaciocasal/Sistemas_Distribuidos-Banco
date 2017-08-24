@@ -46,8 +46,12 @@ public class Servidor extends UnicastRemoteObject implements InterfazReceptorMen
 		}else {
 			return false;
 		}
-		
 	}
+	public boolean existeCuenta(Integer nroCuenta) {
+		boolean result = DataAccess.existeCuenta(nroCuenta);
+		return result;
+	}
+	
 	
 	@Override
 	public Respuesta consultarDinero(String dni) throws RemoteException {
@@ -72,10 +76,13 @@ public class Servidor extends UnicastRemoteObject implements InterfazReceptorMen
 
 
 	@Override
-	public Respuesta depositarDineroCuenta(String dni, Float dinero, Integer nroCuenta) throws RemoteException {
-		String res = dinero.toString() + " pesos a la cuenta nro " + nroCuenta;
-		//return (res);
-		return null;
+	public boolean depositarDineroCuenta(String dni, Float dinero, Integer nroCuenta) throws RemoteException {
+		Respuesta rta = new Respuesta();
+		if (DataAccess.depositarDineroCuenta(dni, dinero, nroCuenta)) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 

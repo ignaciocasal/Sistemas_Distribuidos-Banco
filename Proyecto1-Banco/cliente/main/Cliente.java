@@ -163,16 +163,29 @@ public class Cliente {
 			System.out.println("Opción 3.");
 			System.out.println("Ingrese el nro de cuenta en la que desea depositar:");
 			nroCuentaDeposito = this.ingresarInteger();
-			if (nroCuentaDeposito==null) {
+			if (nroCuentaDeposito==null) { //Si no ingreso nro cuenta
 				this.mostrarMenu();
 			}else{
-				System.out.println("Ingrese el monto a depositar:");
-				dinero = this.ingresarFloat();
-				if (dinero==null) {
+				if (rmiServidor.existeCuenta(nroCuentaDeposito) == false) {
+					//Si ingreso nroCuenta pero no existe
 					this.mostrarMenu();
-				}else{
-				res = rmiServidor.depositarDineroCuenta(this.dni, dinero, nroCuentaDeposito);
-				System.out.println(res);
+				}else {
+					System.out.println("Existe");
+					System.out.println("Ingrese el monto a depositar:");
+					dinero = this.ingresarFloat();
+					if (dinero==null) {
+						this.mostrarMenu();
+					}else{
+					 if (rmiServidor.depositarDineroCuenta(this.dni, dinero, nroCuentaDeposito)) {
+						 System.out.println("Se realizó el doposito");
+						 this.mostrarMenu();
+					 } else {
+						 System.out.println("No se realizo");
+						 this.mostrarMenu();
+					 }
+					
+				}
+				
 				}
 			}
 			break;
