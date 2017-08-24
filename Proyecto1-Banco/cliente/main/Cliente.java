@@ -177,7 +177,7 @@ public class Cliente {
 						this.mostrarMenu();
 					}else{
 					 if (rmiServidor.depositarDineroCuenta(this.dni, dinero, nroCuentaDeposito)) {
-						 System.out.println("Se realizó el doposito");
+						 System.out.println("Se realizó el deposito");
 						 this.mostrarMenu();
 					 } else {
 						 System.out.println("No se realizo");
@@ -191,7 +191,27 @@ public class Cliente {
 			break;
 		case 4: //Extraer dinero
 			System.out.println("Opción 4.");
-			break;
+			System.out.println("Ingrese el monto a extraer:");
+			dinero = this.ingresarFloat();
+			if (dinero==null) {
+				this.mostrarMenu();
+			}else{
+				res = rmiServidor.extraerDinero(this.dni, dinero);
+				if (res.codError==null) {
+					System.out.println("Extracción exitosa. Su saldo actual es de $"+res.valor);
+				}
+				switch (res.codError) {
+				case 1:
+					System.out.println("Error al realizar la operación. Intente nuevamente");
+					break;
+				case 2:
+					System.out.println("Saldo insuficiente para realizar la extracción solicitada");
+					break;
+				default:
+					break;
+				}
+				this.cierreOperacion();
+			}
 		case 5: //Transferir dinero a una cuenta
 			System.out.println("Opción 5.");
 			break;

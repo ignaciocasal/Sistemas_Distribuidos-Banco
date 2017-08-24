@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 import main.Cuenta;
+import main.Respuesta;
 
 public final class DataAccess {
 
@@ -116,7 +117,7 @@ public final class DataAccess {
 		return null;
 	}
 	
-	public static boolean depositarDineroCuenta (String dni, Float dinero, Integer nroCuenta) {
+	public static boolean depositarDineroCuenta(String dni, Float dinero, Integer nroCuenta) {
 		final String consulta = "UPDATE cuentas SET saldo = saldo + '"+dinero+"' WHERE nro = '"+nroCuenta+"'";
 		try (Connection c = BaseDeDatos.newConnection()) {
 			PreparedStatement statement = c.prepareStatement(consulta);
@@ -127,6 +128,26 @@ public final class DataAccess {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public static Respuesta extraerDinero(String dni, Float dinero) {
+		Respuesta rta = new Respuesta();
+		Float saldoActual = DataAccess.consultarDinero(dni);
+		if (saldoActual<dinero) {
+			rta.codError = 2;  //dinero insuficiente
+			return rta;
+		}
+		final String consulta = "UPDATE cuentas SET saldo = saldo - '"+dinero+"' WHERE dni_cliente = '"+dni+"'";
+		try (Connection c = BaseDeDatos.newConnection()) {
+			PreparedStatement statement = c.prepareStatement(consulta);
+			statement.executeUpdate();	
+			rta.valor = saldoActual; 
+			return rta;		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		rta.codError = 1; //error al realizar la consulta
+		return rta;
 	}
 	
 

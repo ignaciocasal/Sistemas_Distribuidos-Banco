@@ -77,7 +77,6 @@ public class Servidor extends UnicastRemoteObject implements InterfazReceptorMen
 
 	@Override
 	public boolean depositarDineroCuenta(String dni, Float dinero, Integer nroCuenta) throws RemoteException {
-		Respuesta rta = new Respuesta();
 		if (DataAccess.depositarDineroCuenta(dni, dinero, nroCuenta)) {
 			return true;
 		}else {
@@ -88,9 +87,7 @@ public class Servidor extends UnicastRemoteObject implements InterfazReceptorMen
 
 	@Override
 	public Respuesta extraerDinero(String dni, Float dinero) throws RemoteException {
-		
-		//return dinero.toString();
-		return null;
+		return DataAccess.extraerDinero(dni, dinero);
 	}
 
 

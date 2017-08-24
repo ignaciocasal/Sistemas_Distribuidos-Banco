@@ -5,8 +5,8 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class Respuesta implements Serializable {
 
-	Integer codError;
-	Float valor;
+	public Integer codError;
+	public Float valor;
 	
 	public Respuesta() {
 		super();
