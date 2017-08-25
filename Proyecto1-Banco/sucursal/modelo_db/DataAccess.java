@@ -141,6 +141,7 @@ public final class DataAccess {
 		try (Connection c = BaseDeDatos.newConnection()) {
 			PreparedStatement statement = c.prepareStatement(consulta);
 			statement.executeUpdate();	
+			saldoActual = DataAccess.consultarDinero(dni);
 			rta.valor = saldoActual; 
 			return rta;		
 		} catch (SQLException e) {

@@ -199,16 +199,17 @@ public class Cliente {
 				res = rmiServidor.extraerDinero(this.dni, dinero);
 				if (res.codError==null) {
 					System.out.println("Extracción exitosa. Su saldo actual es de $"+res.valor);
-				}
-				switch (res.codError) {
-				case 1:
-					System.out.println("Error al realizar la operación. Intente nuevamente");
-					break;
-				case 2:
-					System.out.println("Saldo insuficiente para realizar la extracción solicitada");
-					break;
-				default:
-					break;
+				}else{
+					switch (res.codError) {
+					case 1:
+						System.out.println("Error al realizar la operación. Intente nuevamente");
+						break;
+					case 2:
+						System.out.println("Saldo insuficiente para realizar la extracción solicitada");
+						break;
+					default:
+						break;
+					}					
 				}
 				this.cierreOperacion();
 			}
