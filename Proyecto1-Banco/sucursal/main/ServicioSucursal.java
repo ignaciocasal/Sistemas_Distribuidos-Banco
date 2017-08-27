@@ -2,7 +2,7 @@ package main;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-public interface InterfazReceptorMensajes extends Remote {
+public interface ServicioSucursal extends Remote {
 	
 	
 	//Este es el metodo que implementara el servidor
@@ -13,9 +13,5 @@ public interface InterfazReceptorMensajes extends Remote {
 	boolean depositarDineroCuenta(String dni, Float dinero, Integer nroCuenta) throws RemoteException;
 	Respuesta extraerDinero(String dni, Float dinero) throws RemoteException;
 	Respuesta transferirDinero(String dni, Float dinero, String cbu) throws RemoteException;
-	
-	//test
-	void test() throws RemoteException;
-	
 	
 }

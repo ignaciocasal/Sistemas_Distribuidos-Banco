@@ -1,55 +1,46 @@
-package modelo_db;
+package main;
 
-import java.lang.reflect.Array;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.rmi.AccessException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
+@SuppressWarnings("serial")
+public class ServicioBusquedaImpl extends UnicastRemoteObject implements ServicioBusqueda {
 
-import main.Cuenta;
-import main.Respuesta;
-
-public final class DataAccess {
-
-	private DataAccess() {
-
-	}
-
-	public static void bajarTabla() {
-		String[][] usuarios = new String[6][6];
-		final String consulta = "SELECT * FROM  users";
-		try (Connection c = BaseDeDatos.newConnection()) {
-			PreparedStatement statement = c.prepareStatement(consulta);
-			ResultSet res = statement.executeQuery();
-			int i=0;
-			while (res.next()) {
-				System.out.println("FILA "+i);
-				int j=0;
-				System.out.println();
-				usuarios[i][++j]  = res.getString("dni");
-				System.out.println(usuarios[i][j]);
-				usuarios[i][++j]  = res.getString("nombre");
-				System.out.println(usuarios[i][j]);
-				usuarios[i][++j]  = res.getString("apellido");
-				System.out.println(usuarios[i][j]);
-//				cuentas[i][++j]  = res.getString("cbu");
-//				System.out.println(cuentas[i][j]);
-//				cuentas[i][++j]  = res.getString("dni_cliente");
-//				System.out.println(cuentas[i][j]);
-				i++;
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
+	Integer nroPuerto;
+	String IP;
+	Registry registro;
+	
+	protected ServicioBusquedaImpl(Integer numeroPuertoRemoto) throws RemoteException {
+		
+		try {
+			IP = InetAddress.getLocalHost().getHostAddress();
+		} catch (UnknownHostException e1) {
+			System.out.println("No se encontró el servidor");
 		}
+		
+		nroPuerto = numeroPuertoRemoto;
+		try {
+			registro = LocateRegistry.createRegistry(nroPuerto); //crea el registro
+			registro.rebind("rmiBusqueda", this); //registra el servicio
+		} catch (AccessException e) {
+			System.out.println("Error al registrar el servicio - AccessException");
+		} catch (RemoteException e) {
+			System.out.println("Error al registrar el servicio - RemoteException");
+		} 
+		System.out.println("Servidor: "+IP);
 
 	}
-	public static boolean existeCuenta(Integer nroCuenta) {
+	
+	public boolean existeCuenta(Integer nroCuenta) {
 		final String consulta = "SELECT * FROM  cuentas WHERE cuentas.nro = '"+nroCuenta+"'";
 		try (Connection c = BaseDeDatos.newConnection()) {
 			PreparedStatement statement = c.prepareStatement(consulta);
@@ -64,14 +55,13 @@ public final class DataAccess {
 		return false;
 	}
 		
-	public static boolean login(String dni, String clave) {
-		// tienen que ir los '' por que postgres necesita compara con String
+	public boolean login(String dni, String clave) {
+		// tienen que ir los '' porque postgres necesita compara con String
 		final String consulta = "SELECT * FROM  cuentas WHERE cuentas.dni_cliente = '"+dni+"' "
 				+ "and cuentas.clave = '"+clave+"'";
 		try (Connection c = BaseDeDatos.newConnection()) {
 			PreparedStatement statement = c.prepareStatement(consulta);
 			ResultSet res = statement.executeQuery();
-			int i=0;
 			while (res.next()) {
 				System.out.println("Usuario "+dni+" ha iniciado sesión");
 				return true;
@@ -84,13 +74,12 @@ public final class DataAccess {
 		return false;
 	}
 	
-	public static Float consultarDinero(String dni) {
+	public Float consultarDinero(String dni) {
 		final String consulta = "SELECT cuentas.saldo FROM cuentas WHERE cuentas.dni_cliente = '"+dni+"'";
 		Float result; 
 		try (Connection c = BaseDeDatos.newConnection()) {
 			PreparedStatement statement = c.prepareStatement(consulta);
 			ResultSet res = statement.executeQuery();
-			int i=0;
 			while (res.next()) {
 				result = Float.parseFloat(res.getString("saldo"));
 				return result;
@@ -102,8 +91,8 @@ public final class DataAccess {
 		return null;
 	}
 	
-	public static Float depositarDinero(String dni, Float dinero) {
-		Float saldoActual = DataAccess.consultarDinero(dni); // Para checkear si es correcto
+	public Float depositarDinero(String dni, Float dinero) {
+		Float saldoActual = this.consultarDinero(dni); // Para checkear si es correcto
 		Float saldoAGuardar = saldoActual + dinero;
 		final String consulta = "UPDATE cuentas SET saldo = '"+saldoAGuardar+"' WHERE dni_cliente = '"+dni+"'";
 		try (Connection c = BaseDeDatos.newConnection()) {
@@ -117,7 +106,7 @@ public final class DataAccess {
 		return null;
 	}
 	
-	public static boolean depositarDineroCuenta(String dni, Float dinero, Integer nroCuenta) {
+	public boolean depositarDineroCuenta(String dni, Float dinero, Integer nroCuenta) {
 		final String consulta = "UPDATE cuentas SET saldo = saldo + '"+dinero+"' WHERE nro = '"+nroCuenta+"'";
 		try (Connection c = BaseDeDatos.newConnection()) {
 			PreparedStatement statement = c.prepareStatement(consulta);
@@ -130,9 +119,9 @@ public final class DataAccess {
 		return false;
 	}
 	
-	public static Respuesta extraerDinero(String dni, Float dinero) {
+	public Respuesta extraerDinero(String dni, Float dinero) {
 		Respuesta rta = new Respuesta();
-		Float saldoActual = DataAccess.consultarDinero(dni);
+		Float saldoActual = this.consultarDinero(dni);
 		if (saldoActual<dinero) {
 			rta.codError = 2;  //dinero insuficiente
 			return rta;
@@ -141,7 +130,7 @@ public final class DataAccess {
 		try (Connection c = BaseDeDatos.newConnection()) {
 			PreparedStatement statement = c.prepareStatement(consulta);
 			statement.executeUpdate();	
-			saldoActual = DataAccess.consultarDinero(dni);
+			saldoActual = this.consultarDinero(dni);
 			rta.valor = saldoActual; 
 			return rta;		
 		} catch (SQLException e) {
