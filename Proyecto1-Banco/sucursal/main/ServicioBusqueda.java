@@ -12,7 +12,8 @@ public interface ServicioBusqueda extends Remote {
 	Float depositarDinero(String dni, Float dinero) throws RemoteException;
 	boolean depositarDineroCuenta(String dni, Float dinero, Integer nroCuenta) throws RemoteException;
 	Respuesta extraerDinero(String dni, Float dinero) throws RemoteException;
-	
+	boolean existeCbu(String cbu) throws RemoteException;
+	Integer depositarDineroPorCbu(String cbu, Float dinero) throws RemoteException;
 	
 	
 }

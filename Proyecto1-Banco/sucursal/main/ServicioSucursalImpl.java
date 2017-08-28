@@ -103,10 +103,18 @@ public class ServicioSucursalImpl extends UnicastRemoteObject implements Servici
 
 	@Override
 	public Respuesta transferirDinero(String dni, Float dinero, String CBU) throws RemoteException {
-		return null;
-		// TODO Auto-generated method stub
-		
+		Respuesta rta = new Respuesta();
+		if (rmiBusqueda.existeCbu(CBU)) {
+			rta = rmiBusqueda.extraerDinero(dni, dinero);
+			if (rta.codError == null) {
+				rta.codError = rmiBusqueda.depositarDineroPorCbu(CBU, dinero);
+			}
+		}else {
+			rta.codError = 3;
+		}
+		return rta;
 	}
+
 
 
 	
