@@ -5,11 +5,11 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Scanner;
 
-import main.InterfazReceptorMensajes;
+import main.ServicioSucursal;
 
 public class Cliente {
 
-	private InterfazReceptorMensajes rmiServidor;
+	private ServicioSucursal rmiServidor;
 	private Registry registro;
 	private String direccionServidor;
 	private Integer puertoServidor;
@@ -34,7 +34,7 @@ public class Cliente {
 		//Obtener registro
 		registro = LocateRegistry.getRegistry(direccionServidor,puertoServidor);
 		//creando el objeto remoto
-		rmiServidor = (InterfazReceptorMensajes)
+		rmiServidor = (ServicioSucursal)
 				(registro.lookup("rmiServidor"));
 	}
 	
@@ -227,11 +227,5 @@ public class Cliente {
 		}
 		}
 	}
-	
-	void testear() throws RemoteException{
-		rmiServidor.test();
-	}
-
-	
-	
+		
 }
