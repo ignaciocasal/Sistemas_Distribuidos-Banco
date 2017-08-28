@@ -116,6 +116,18 @@ public final class DataAccess {
 		}
 		return null;
 	}
+	public static Integer depositarDineroPorCbu(String cbu, Float dinero) {
+		final String consulta = "UPDATE cuentas SET saldo = saldo +'"+dinero+"' WHERE cbu = '"+cbu+"'";
+		try (Connection c = BaseDeDatos.newConnection()) {
+			PreparedStatement statement = c.prepareStatement(consulta);
+			statement.executeUpdate();	
+			return null;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 1; //Error al realizar consulta
+	}
 	
 	public static boolean depositarDineroCuenta(String dni, Float dinero, Integer nroCuenta) {
 		final String consulta = "UPDATE cuentas SET saldo = saldo + '"+dinero+"' WHERE nro = '"+nroCuenta+"'";
@@ -149,6 +161,23 @@ public final class DataAccess {
 		}
 		rta.codError = 1; //error al realizar la consulta
 		return rta;
+	}
+	
+	
+	public static boolean existeCbu(String cbu) {
+		final String consulta;
+		consulta = "SELECT * FROM cuentas WHERE cbu = '"+cbu+"'";
+		try (Connection c = BaseDeDatos.newConnection()) {
+			PreparedStatement statement = c.prepareStatement(consulta);
+			ResultSet res = statement.executeQuery();
+			while (res.next()) {
+				return true;
+			}
+			return false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 

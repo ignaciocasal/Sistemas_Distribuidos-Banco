@@ -93,9 +93,16 @@ public class Servidor extends UnicastRemoteObject implements InterfazReceptorMen
 
 	@Override
 	public Respuesta transferirDinero(String dni, Float dinero, String CBU) throws RemoteException {
-		return null;
-		// TODO Auto-generated method stub
-		
+		Respuesta rta = new Respuesta();
+		if (DataAccess.existeCbu(CBU)) {
+			rta = DataAccess.extraerDinero(dni, dinero);
+			if (rta.codError == null) {
+				rta.codError = DataAccess.depositarDineroPorCbu(CBU, dinero);
+			}
+		}else {
+			rta.codError = 3;
+		}
+		return rta;
 	}
 
 	@Override

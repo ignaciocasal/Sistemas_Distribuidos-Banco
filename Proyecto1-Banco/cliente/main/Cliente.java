@@ -214,7 +214,26 @@ public class Cliente {
 				this.cierreOperacion();
 			}
 		case 5: //Transferir dinero a una cuenta
-			System.out.println("Opción 5.");
+			//System.out.println("Opción 5.");
+			System.out.println("Ingrese el monto a transferir:");
+			dinero = this.ingresarFloat();
+			if (dinero==null) {
+				this.mostrarMenu();
+			}else {
+				System.out.println("Ingrese el cbu de destino:");
+				cbu = teclado.nextLine();
+				res = rmiServidor.transferirDinero(this.dni, dinero, cbu);
+				 	if (res.codError==null) {
+				 		System.out.println("Se realizó la operación. Su saldo es: "+res.valor);
+				 	}else if (res.codError == 1) {
+				 			System.out.println("Error al realizar operación");
+				 		}else if (res.codError == 1){
+				 			System.out.println("Saldo insuficiente");
+				 		} else {
+				 			System.out.println("No existe CBU");
+				 		}
+			}
+			this.cierreOperacion();
 			break;
 		case 6:
 			System.out.println("-- SESION FINALIZADA --");
