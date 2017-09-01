@@ -1,6 +1,7 @@
 package main;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 
 public interface ServicioBusqueda extends Remote {
 	
@@ -14,6 +15,7 @@ public interface ServicioBusqueda extends Remote {
 	Respuesta extraerDinero(String dni, Float dinero) throws RemoteException;
 	boolean existeCbu(String cbu) throws RemoteException;
 	Integer depositarDineroPorCbu(String cbu, Float dinero) throws RemoteException;
+	Integer transferirDinero(String dni, Float dinero, String cbu) throws RemoteException,SQLException;
 	
 	
 }

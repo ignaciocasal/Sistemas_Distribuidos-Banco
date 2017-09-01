@@ -7,6 +7,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.sql.SQLException;
 
 @SuppressWarnings("serial")
 public class ServicioSucursalImpl extends UnicastRemoteObject implements ServicioSucursal {
@@ -17,12 +18,14 @@ public class ServicioSucursalImpl extends UnicastRemoteObject implements Servici
 	ServicioBusqueda rmiBusqueda;
 	
 	
+	
 	protected ServicioSucursalImpl(Integer nroPuertoRemotoSucursal, Integer nroPuertoRemotoBusqueda) throws RemoteException, NotBoundException {
 		
 		try {
 			IP = InetAddress.getLocalHost().getHostAddress();
 		} catch (UnknownHostException e1) {
 			System.out.println("No se encontró el servidor");
+//			IP = "192.168.1.105";
 		}
 		
 		nroPuerto = nroPuertoRemotoSucursal;
@@ -102,17 +105,14 @@ public class ServicioSucursalImpl extends UnicastRemoteObject implements Servici
 
 
 	@Override
-	public Respuesta transferirDinero(String dni, Float dinero, String CBU) throws RemoteException {
-		Respuesta rta = new Respuesta();
-		if (rmiBusqueda.existeCbu(CBU)) {
-			rta = rmiBusqueda.extraerDinero(dni, dinero);
-			if (rta.codError == null) {
-				rta.codError = rmiBusqueda.depositarDineroPorCbu(CBU, dinero);
-			}
+	public Integer transferirDinero(String dni, Float dinero, String cbu) throws SQLException, RemoteException {
+		Integer codError;
+		if (rmiBusqueda.existeCbu(cbu)) {
+			codError = rmiBusqueda.transferirDinero(dni, dinero, cbu);
 		}else {
-			rta.codError = 3;
+			codError = 3; //cuenta no existente
 		}
-		return rta;
+		return codError;
 	}
 
 

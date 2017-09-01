@@ -169,5 +169,35 @@ public class ServicioBusquedaImpl extends UnicastRemoteObject implements Servici
 		return false;
 	}
 	
-
+	@Override
+	public Integer transferirDinero(String dni, Float dinero, String cbu) throws SQLException {
+		Integer codError = null;
+		Float saldoActual = this.consultarDinero(dni);
+		if (saldoActual<dinero) {
+			codError = 2;  //dinero insuficiente
+			return codError;
+		}
+		
+		Connection c = BaseDeDatos.newConnection();
+		
+		final String consulta1 = "UPDATE cuentas SET saldo = saldo - '"+dinero+"' WHERE dni_cliente = '"+dni+"'";
+		final String consulta2 = "UPDATE cuentas SET saldo = saldo +'"+dinero+"' WHERE cbu = '"+cbu+"'";
+		try {
+			
+			c.setAutoCommit(false);
+			
+			PreparedStatement statement1 = c.prepareStatement(consulta1);
+			statement1.executeUpdate();	
+			
+			PreparedStatement statement2 = c.prepareStatement(consulta2);
+			statement2.executeUpdate();	
+			
+			c.commit();
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			c.rollback();
+			codError = 1;
+		}
+		return codError;
+	}
 }

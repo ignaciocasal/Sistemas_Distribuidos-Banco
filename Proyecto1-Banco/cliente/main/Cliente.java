@@ -3,6 +3,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 import main.ServicioSucursal;
@@ -38,7 +39,7 @@ public class Cliente {
 				(registro.lookup("rmiServidor"));
 	}
 	
-	void start() throws RemoteException{
+	void start() throws RemoteException, SQLException{
 		System.out.println("Ingrese su DNI:");
 		Integer intDni = this.ingresarInteger();
 		if (intDni==null) {
@@ -51,7 +52,7 @@ public class Cliente {
 		}
 	}
 	
-	void iniciarSesion(String dni, String clave) throws RemoteException{
+	void iniciarSesion(String dni, String clave) throws RemoteException, SQLException{
 		boolean existe = rmiServidor.ingresarAlSistema(dni,clave);
 		if (existe == true) {
 			this.dni=dni;
@@ -86,7 +87,7 @@ public class Cliente {
 		return ingreso;
 	}
 	
-	private void cierreOperacion() throws RemoteException{
+	private void cierreOperacion() throws RemoteException, SQLException{
 		System.out.println("Seleccione una opcion:");
 		System.out.println("1 - Cerrar sesión");
 		System.out.println("2 - Volver al menú principal");
@@ -111,7 +112,7 @@ public class Cliente {
 		}
 	}
 	
-	private void mostrarMenu() throws RemoteException {
+	private void mostrarMenu() throws RemoteException, SQLException {
 		
 		System.out.println("Seleccione una opcion del menu:");
 		System.out.println("1 - Consultar saldo");
@@ -222,12 +223,12 @@ public class Cliente {
 			}else {
 				System.out.println("Ingrese el cbu de destino:");
 				cbu = teclado.nextLine();
-				res = rmiServidor.transferirDinero(this.dni, dinero, cbu);
-				 	if (res.codError==null) {
-				 		System.out.println("Se realizó la operación. Su saldo es: "+res.valor);
-				 	}else if (res.codError == 1) {
+				Integer codError = rmiServidor.transferirDinero(this.dni, dinero, cbu);
+				 	if (codError==null) {
+				 		System.out.println("La transferencia se realizó correctamente");
+				 	}else if (codError == 1) {
 				 			System.out.println("Error al realizar operación");
-				 		}else if (res.codError == 1){
+				 		}else if (codError == 2){
 				 			System.out.println("Saldo insuficiente");
 				 		} else {
 				 			System.out.println("No existe CBU");
