@@ -19,14 +19,18 @@ public class ServicioSucursalImpl extends UnicastRemoteObject implements Servici
 	
 	
 	
-	protected ServicioSucursalImpl(Integer nroPuertoRemotoSucursal, Integer nroPuertoRemotoBusqueda) throws RemoteException, NotBoundException {
+	public ServicioSucursalImpl(Integer nroPuertoRemotoSucursal, Integer nroPuertoRemotoBusqueda, String IPSv) throws RemoteException {
 		
-		try {
-			IP = InetAddress.getLocalHost().getHostAddress();
-		} catch (UnknownHostException e1) {
-			System.out.println("No se encontró el servidor");
-//			IP = "192.168.1.105";
+		if (IPSv.equals("")) {
+			try {
+				this.IP = InetAddress.getLocalHost().getHostAddress();
+			} catch (UnknownHostException e) {
+				System.out.println("UnknownHostException");
+			}
+		}else{
+			this.IP = IPSv;
 		}
+		
 		
 		nroPuerto = nroPuertoRemotoSucursal;
 		try {
@@ -41,10 +45,26 @@ public class ServicioSucursalImpl extends UnicastRemoteObject implements Servici
 		
 		//DATABASE - RMI BUSQUEDA 
 		//Obtener registro
-		registro = LocateRegistry.getRegistry(IP,nroPuertoRemotoBusqueda);
+		try {
+			registro = LocateRegistry.getRegistry(IP,nroPuertoRemotoBusqueda);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//creando el objeto remoto
-		rmiBusqueda = (ServicioBusqueda)
-				(registro.lookup("rmiBusqueda"));
+		try {
+			rmiBusqueda = (ServicioBusqueda)
+					(registro.lookup("rmiBusqueda"));
+		} catch (AccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 	
