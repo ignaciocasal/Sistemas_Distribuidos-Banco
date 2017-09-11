@@ -126,12 +126,16 @@ public class Cliente {
 		if (ingreso==null) {
 			this.mostrarMenu();
 		}else{
+			this.menuController(ingreso);
 		
+		}
+	}
+
+	public void menuController(Integer ingreso) throws RemoteException, SQLException {
 		Respuesta res = null;
 		Float dinero = null;
 		Integer nroCuentaDeposito = null;
 		
-//		teclado.close();
 		switch (ingreso) {
 		case 1: //Consultar saldo
 			System.out.println("Opción 1.");
@@ -157,7 +161,6 @@ public class Cliente {
 						System.out.println("Error al realizar la operación. Intente nuevamente");
 					}
 			this.cierreOperacion();
-			// SI TE PARECE acá reutilizar código, es mas o menos parecido lo que hacemos con la respuesta
 			}
 			break;
 		case 3: //Depositar dinero en otra cuenta
@@ -245,7 +248,7 @@ public class Cliente {
 			this.mostrarMenu();
 			break;
 		}
-		}
+		
 	}
 		
 }

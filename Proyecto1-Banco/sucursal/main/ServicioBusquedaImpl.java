@@ -63,7 +63,7 @@ public class ServicioBusquedaImpl extends UnicastRemoteObject implements Servici
 			PreparedStatement statement = c.prepareStatement(consulta);
 			ResultSet res = statement.executeQuery();
 			while (res.next()) {
-				System.out.println("Usuario "+dni+" ha iniciado sesión");
+				System.out.println("El usuario "+dni+" ha iniciado sesión");
 				return true;
 			}
 			

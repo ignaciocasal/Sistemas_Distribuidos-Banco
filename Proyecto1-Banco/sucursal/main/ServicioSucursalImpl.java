@@ -93,6 +93,7 @@ public class ServicioSucursalImpl extends UnicastRemoteObject implements Servici
 		if(rta.valor == null) {
 			rta.codError = 1;
 		} 
+		System.out.println("El usuario "+dni+" ha consultado su saldo");
 		//En cliente: Si llega codError null todo bien SINO ver cual es el error
 		return rta;
 	}
@@ -104,6 +105,7 @@ public class ServicioSucursalImpl extends UnicastRemoteObject implements Servici
 		if (rta.valor == null) {
 			rta.codError = 1; //No pudo depositar
 		} 
+		System.out.println("El usuario "+dni+" ha depositado $"+dinero+" en su cuenta");
 		return rta;
 	}
 
@@ -111,15 +113,17 @@ public class ServicioSucursalImpl extends UnicastRemoteObject implements Servici
 	@Override
 	public boolean depositarDineroCuenta(String dni, Float dinero, Integer nroCuenta) throws RemoteException {
 		if (rmiBusqueda.depositarDineroCuenta(dni, dinero, nroCuenta)) {
-			return true;
+			System.out.println("El usuario "+dni+" ha depositado $"+dinero+" en la cuenta N°"+nroCuenta);
+			return true; //correcto
 		}else {
-			return false;
+			return false; //error
 		}
 	}
 
 
 	@Override
 	public Respuesta extraerDinero(String dni, Float dinero) throws RemoteException {
+		System.out.println("El usuario "+dni+" ha extraído $"+dinero);
 		return rmiBusqueda.extraerDinero(dni, dinero);
 	}
 
@@ -129,6 +133,7 @@ public class ServicioSucursalImpl extends UnicastRemoteObject implements Servici
 		Integer codError;
 		if (rmiBusqueda.existeCbu(cbu)) {
 			codError = rmiBusqueda.transferirDinero(dni, dinero, cbu);
+			System.out.println("El usuario "+dni+" ha transferido $"+dinero+" a la cuenta "+cbu);
 		}else {
 			codError = 3; //cuenta no existente
 		}
